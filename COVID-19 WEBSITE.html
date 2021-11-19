@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://127.0.0.1:8000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID-19 WEBSITE</title>
+    <link rel="stylesheet" href="./COVID-19 WEBSITE_files/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<style>#map { width: 800px; height: 500px; }
+        .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+        .legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+    <style>
+        #map {
+            width: 100%;
+            height: 480px;
+        }
+    </style>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1039.0" data-gr-ext-installed="" cz-shortcut-listen="true">
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <div class="container-fluid">
+
+            <a class="navbar-brand" href="http://127.0.0.1:8000/">
+                <button class="btn btn-outline-dark">
+
+                    <b>COVID-19 DASHBOARD</b>
+                </button>
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                </ul>
+                <form class="d-flex" method="POST" action="http://127.0.0.1:8000/search/">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="OnKhdSFiGLFFmYPuqY2cicalj9REN7bn8K2wIAxg2coDDsmFSVv6vN6penSqyzsQ">
+
+
+                    <input class="form-control me-4" type="number" name="zip_code" id="zip_code" placeholder="Enter the Fips Code">
+
+                    <input class="form-control me-4" type="hidden" value="" name="latitude_lng_value" id="latitude_lng_value">
+
+                    <input class="form-control me-4" type="date" id="date" name="date" placeholder="Enter the Data">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+
+
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    
+
+
+<style>
+
+    .info {
+        padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+</style>
+<section class="body my-5">
+    <div class="d-flex justify-content-center">
+        <h6 class="border border-dark d-inline-block p-3 rounded ">
+            Select your location from the map below and enter a date to display current data or enter a Fips code and
+            date to show the data as well
+        </h6>
+    </div>
+
+    <!-- <div class="d-flex justify-content-center my-5">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13004040.960949656!2d-104.65385985223583!3d37.275821218675254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sus!4v1636867378915!5m2!1sen!2sus"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+    </div> -->
+
+    <!-- <div id="latlng" class=" d-flex justify-content-center my-5">
+    </div> -->
+
+
+
+
+
+
+
+
+
+    
+
+
+    
+    
+    <div class="container">
+        <div class="my-5 rounded border border-dark leaflet-container leaflet-touch leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" id="map" tabindex="0" style="position: relative;"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 16; transform: translate3d(375px, 134px, 0px) scale(0.25);"></div><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(0px, 0px, 0px) scale(1);"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/0/0?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(390px, -240px, 0px); opacity: 1;"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/0/1?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(390px, 272px, 0px); opacity: 1;"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/1/0?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(-122px, -240px, 0px); opacity: 1;"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/1/0?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(902px, -240px, 0px); opacity: 1;"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/1/1?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(-122px, 272px, 0px); opacity: 1;"><img alt="" role="presentation" src="https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/1/1/1?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw" class="leaflet-tile leaflet-tile-loaded" style="width: 512px; height: 512px; transform: translate3d(902px, 272px, 0px); opacity: 1;"></div></div></div><div class="leaflet-pane leaflet-shadow-pane"><img src="https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png" class="leaflet-marker-shadow leaflet-zoom-animated" alt="" style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; transform: translate3d(630px, 158px, 0px);"></div><div class="leaflet-pane leaflet-overlay-pane"><svg pointer-events="none" class="leaflet-zoom-animated" width="1553" height="574" viewBox="-129 -48 1553 574" style="transform: translate3d(-129px, -48px, 0px);"><g><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M654 166L658 166L660 179L653 179L653 181L651 181L650 176L651 166z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M528 83L528 84zM527 82L527 83zM524 77L523 77zM522 77L525 79L527 85L524 85L522 83L522 77zM522 81L522 82zM521 74L525 76L523 77L521 75zM521 76L520 75L522 75L520 79L520 77zM519 77L517 75L517 71L519 75zM519 67L521 69L521 72L519 74L518 66zM516 72L516 73zM514 67L516 67L519 71L516 70L516 72L514 67zM484 56L481 59L483 56zM482 54L482 55zM482 -13L489 -11L495 -12L500 -8L501 56L505 55L512 63L514 59L517 58L527 75L532 79L532 83L530 85L530 82L529 83L527 82L527 80L526 81L526 75L522 73L517 62L518 67L515 66L515 64L513 63L515 66L514 67L504 60L505 57L501 59L490 55L485 56L487 54L484 51L480 53L480 58L479 57L474 61L473 60L472 62L470 62L472 59L470 59L472 55L471 53L476 51L473 50L463 63L466 64L457 72L457 74L454 74L454 76L453 75L451 79L448 81L442 81L441 84L439 82L440 83L438 83L434 87L434 84L438 84L437 83L439 83L442 79L445 80L447 76L451 75L455 65L451 64L451 66L448 63L441 65L441 57L440 56L439 58L436 59L432 54L433 52L429 48L435 38L437 39L440 36L441 37L445 35L443 31L445 29L444 27L441 28L439 31L437 29L431 30L428 28L429 25L424 22L427 19L430 19L430 17L432 16L436 15L436 19L442 19L444 17L441 17L442 16L439 13L441 14L442 17L442 12L436 12L434 7L428 2L429 -2L435 -2L442 -13L445 -14L448 -18L449 -17L454 -19L456 -22L460 -20L458 -18L460 -18L461 -21L463 -18L466 -19L468 -18L468 -16L472 -14L478 -15L481 -13zM467 68L468 65L468 68zM464 71L464 69L465 70L468 68L468 71L469 70L464 75L462 73L462 71L464 70zM462 76L462 77zM459 79L459 80zM447 82L447 83zM445 82L446 83L445 82zM440 84L440 84zM440 35L439 36zM439 86L439 87zM431 87L431 88zM431 88L430 88zM429 55L431 57L430 58L426 56L428 55zM429 89L428 90L430 90L425 92L428 89zM422 93L424 91L425 92L423 92L422 94zM419 94L418 94zM418 73L418 73zM417 95L416 95zM413 35L417 35L422 38L419 40L418 38L414 38L413 36zM412 96L411 97zM408 98L410 98L408 98zM406 97L407 96L407 98L405 98zM400 99L399 100L399 98L400 99zM398 98L398 99zM395 99L396 100zM370 94L365 94z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M592 159L592 178L586 178L575 174L577 168L576 162L578 161L578 159L588 159z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M633 160L646 160L645 161L647 162L642 171L643 172L636 172L634 170L633 160z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M551 140L561 140L561 151L576 166L576 173L569 174L568 171L565 169L560 167L559 168L555 160L556 159L554 158L554 154L553 155L550 152L550 148L548 146L549 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M595 144L612 144L612 159L592 159L592 144z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M694 140L698 140L698 142L693 144L693 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M687 148L689 153L687 153L687 148z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M683 151L683 152z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M659 179L668 181L669 180L671 182L674 192L674 196L672 198L669 195L667 191L668 190L666 189L667 186L663 182L653 182L653 179z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M666 166L665 167L672 176L668 181L660 179L658 166L664 166z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M459 217L458 215L461 214L462 215L460 217zM457 211L458 212L456 211zM455 210L455 210zM453 209L452 209zM448 207L449 208L448 207z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M572 112L573 119L577 125L576 126L578 126L581 131L585 129L586 130L586 140L569 140L569 129L571 126L569 124L569 112z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M644 138L652 138L653 140L652 156L648 159L644 150L642 149L643 143L646 140L645 139z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M657 141L661 141L661 151L657 155L652 156L653 141L655 141z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M642 134L646 140L642 146L630 145L627 137L628 134z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M612 148L631 148L633 151L633 159L612 159L612 148z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M663 152L666 153L669 157L664 160L648 160L648 158L652 157L652 155L658 155L661 151L662 152z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M636 172L643 172L643 176L641 178L647 179L646 183L647 182L648 185L635 183L635 172z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M701 136L700 127L705 118L709 120L709 125L711 129L701 135z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M686 155L686 155zM676 149L686 149L687 153L689 153L688 155L685 154L686 149L684 153L685 154L683 154L683 152L680 149L676 151z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M700 137L702 141L701 142L698 140L694 140L694 137L700 137z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M665 141L655 141L657 138L657 129L659 129L661 125L665 128L663 133L664 134L666 132L668 136L665 141zM659 125L658 126L659 125zM653 128L652 125L645 122L651 118L652 119L650 121L660 121L662 123L663 122L663 124L665 124L657 124L655 126L656 125L654 125L653 128zM649 116L648 117L650 116z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M640 121L638 129L643 134L628 134L625 112L631 112L631 110L633 113L637 113L642 116L647 116L640 121z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M650 166L651 181L648 182L646 180L647 179L641 179L643 175L643 169L645 166z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M641 145L648 157L647 162L633 160L633 151L630 145L637 145z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M606 112L606 128L586 128L586 130L585 129L581 131L576 125L577 122L573 118L572 112L591 112z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M608 136L622 136L627 138L631 148L612 148L612 144L606 144L606 136z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M569 140L578 140L578 161L576 166L561 151L561 140L564 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M700 127L701 136L696 137L697 131L700 127z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M691 143L692 146L689 151L687 149L690 143z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M596 159L609 159L609 176L599 176L592 178L592 159z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M693 128L694 137L692 144L696 144L692 145L688 141L675 140L678 137L677 136L685 134L685 132L689 128L691 128z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M672 160L686 160L687 162L685 162L687 163L680 170L675 166L671 165L662 166L665 163L669 162L670 160z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M625 112L627 125L606 125L606 112z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M673 140L672 149L667 153L662 152L661 141L669 142L673 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M617 159L633 159L633 170L625 170L618 168L618 160L609 160L612 159z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M552 124L553 126L569 124L571 126L569 131L569 140L549 140L549 124L551 124z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M675 139L688 140L688 142L690 143L688 144L689 147L686 149L673 149L673 140L675 139z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M699 141L699 142zM699 140L698 143L698 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M667 165L675 166L679 170L677 170L677 172L672 176L666 166z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M606 125L627 125L626 126L628 138L622 136L606 136L606 128z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M652 160L670 160L662 166L645 166L648 160z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M612 160L618 160L619 168L624 170L631 169L635 172L636 182L633 184L632 183L631 186L627 187L628 188L625 190L624 193L625 196L619 192L614 183L610 183L608 186L599 177L609 176L609 160z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M583 140L586 140L586 144L592 144L592 159L578 159L578 140z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M699 128L696 136L694 137L693 129L696 128z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M688 155L686 158L687 155zM686 155L686 155zM679 150L683 152L682 153L685 156L684 159L686 159L664 160L669 157L672 158L679 151z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M569 112L569 123L559 126L554 126L549 122L547 115L548 114L553 117L554 116L554 118L553 112zM553 115L553 115zM552 113L552 114z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M673 145L673 149L676 149L676 151L678 149L681 150L675 153L674 157L670 158L667 155L667 153L672 149L673 145z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M645 122L653 127L652 130L654 128L652 137L644 138L642 132L638 129L639 122L644 120L644 122z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M592 128L606 128L606 144L586 144L586 128z"></path><path class="leaflet-interactive" stroke="#3388ff" stroke-opacity="1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#3388ff" fill-opacity="0.2" fill-rule="evenodd" d="M713 220L711 220L711 218L715 219L714 220z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M654 166L658 166L660 179L653 179L653 181L651 181L650 176L651 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M528 83L528 84zM527 82L527 83zM524 77L523 77zM522 77L525 79L527 85L524 85L522 83L522 77zM522 81L522 82zM521 74L525 76L523 77L521 75zM521 76L520 75L522 75L520 79L520 77zM519 77L517 75L517 71L519 75zM519 67L521 69L521 72L519 74L518 66zM516 72L516 73zM514 67L516 67L519 71L516 70L516 72L514 67zM484 56L481 59L483 56zM482 54L482 55zM482 -13L489 -11L495 -12L500 -8L501 56L505 55L512 63L514 59L517 58L527 75L532 79L532 83L530 85L530 82L529 83L527 82L527 80L526 81L526 75L522 73L517 62L518 67L515 66L515 64L513 63L515 66L514 67L504 60L505 57L501 59L490 55L485 56L487 54L484 51L480 53L480 58L479 57L474 61L473 60L472 62L470 62L472 59L470 59L472 55L471 53L476 51L473 50L463 63L466 64L457 72L457 74L454 74L454 76L453 75L451 79L448 81L442 81L441 84L439 82L440 83L438 83L434 87L434 84L438 84L437 83L439 83L442 79L445 80L447 76L451 75L455 65L451 64L451 66L448 63L441 65L441 57L440 56L439 58L436 59L432 54L433 52L429 48L435 38L437 39L440 36L441 37L445 35L443 31L445 29L444 27L441 28L439 31L437 29L431 30L428 28L429 25L424 22L427 19L430 19L430 17L432 16L436 15L436 19L442 19L444 17L441 17L442 16L439 13L441 14L442 17L442 12L436 12L434 7L428 2L429 -2L435 -2L442 -13L445 -14L448 -18L449 -17L454 -19L456 -22L460 -20L458 -18L460 -18L461 -21L463 -18L466 -19L468 -18L468 -16L472 -14L478 -15L481 -13zM467 68L468 65L468 68zM464 71L464 69L465 70L468 68L468 71L469 70L464 75L462 73L462 71L464 70zM462 76L462 77zM459 79L459 80zM447 82L447 83zM445 82L446 83L445 82zM440 84L440 84zM440 35L439 36zM439 86L439 87zM431 87L431 88zM431 88L430 88zM429 55L431 57L430 58L426 56L428 55zM429 89L428 90L430 90L425 92L428 89zM422 93L424 91L425 92L423 92L422 94zM419 94L418 94zM418 73L418 73zM417 95L416 95zM413 35L417 35L422 38L419 40L418 38L414 38L413 36zM412 96L411 97zM408 98L410 98L408 98zM406 97L407 96L407 98L405 98zM400 99L399 100L399 98L400 99zM398 98L398 99zM395 99L396 100zM370 94L365 94z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M592 159L592 178L586 178L575 174L577 168L576 162L578 161L578 159L588 159z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M633 160L646 160L645 161L647 162L642 171L643 172L636 172L634 170L633 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M551 140L561 140L561 151L576 166L576 173L569 174L568 171L565 169L560 167L559 168L555 160L556 159L554 158L554 154L553 155L550 152L550 148L548 146L549 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M595 144L612 144L612 159L592 159L592 144z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M694 140L698 140L698 142L693 144L693 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M687 148L689 153L687 153L687 148z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M683 151L683 152z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M659 179L668 181L669 180L671 182L674 192L674 196L672 198L669 195L667 191L668 190L666 189L667 186L663 182L653 182L653 179z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M666 166L665 167L672 176L668 181L660 179L658 166L664 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M459 217L458 215L461 214L462 215L460 217zM457 211L458 212L456 211zM455 210L455 210zM453 209L452 209zM448 207L449 208L448 207z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FED976" fill-opacity="0.7" fill-rule="evenodd" d="M572 112L573 119L577 125L576 126L578 126L581 131L585 129L586 130L586 140L569 140L569 129L571 126L569 124L569 112z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M644 138L652 138L653 140L652 156L648 159L644 150L642 149L643 143L646 140L645 139z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M657 141L661 141L661 151L657 155L652 156L653 141L655 141z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M642 134L646 140L642 146L630 145L627 137L628 134z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M612 148L631 148L633 151L633 159L612 159L612 148z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M663 152L666 153L669 157L664 160L648 160L648 158L652 157L652 155L658 155L661 151L662 152z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M636 172L643 172L643 176L641 178L647 179L646 183L647 182L648 185L635 183L635 172z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M701 136L700 127L705 118L709 120L709 125L711 129L701 135z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M686 155L686 155zM676 149L686 149L687 153L689 153L688 155L685 154L686 149L684 153L685 154L683 154L683 152L680 149L676 151z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M700 137L702 141L701 142L698 140L694 140L694 137L700 137z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M665 141L655 141L657 138L657 129L659 129L661 125L665 128L663 133L664 134L666 132L668 136L665 141zM659 125L658 126L659 125zM653 128L652 125L645 122L651 118L652 119L650 121L660 121L662 123L663 122L663 124L665 124L657 124L655 126L656 125L654 125L653 128zM649 116L648 117L650 116z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M640 121L638 129L643 134L628 134L625 112L631 112L631 110L633 113L637 113L642 116L647 116L640 121z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M650 166L651 181L648 182L646 180L647 179L641 179L643 175L643 169L645 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M641 145L648 157L647 162L633 160L633 151L630 145L637 145z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M606 112L606 128L586 128L586 130L585 129L581 131L576 125L577 122L573 118L572 112L591 112z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M608 136L622 136L627 138L631 148L612 148L612 144L606 144L606 136z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M569 140L578 140L578 161L576 166L561 151L561 140L564 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M700 127L701 136L696 137L697 131L700 127z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M691 143L692 146L689 151L687 149L690 143z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FED976" fill-opacity="0.7" fill-rule="evenodd" d="M596 159L609 159L609 176L599 176L592 178L592 159z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M693 128L694 137L692 144L696 144L692 145L688 141L675 140L678 137L677 136L685 134L685 132L689 128L691 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M672 160L686 160L687 162L685 162L687 163L680 170L675 166L671 165L662 166L665 163L669 162L670 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M625 112L627 125L606 125L606 112z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M673 140L672 149L667 153L662 152L661 141L669 142L673 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M617 159L633 159L633 170L625 170L618 168L618 160L609 160L612 159z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M552 124L553 126L569 124L571 126L569 131L569 140L549 140L549 124L551 124z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M675 139L688 140L688 142L690 143L688 144L689 147L686 149L673 149L673 140L675 139z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M699 141L699 142zM699 140L698 143L698 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M667 165L675 166L679 170L677 170L677 172L672 176L666 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M606 125L627 125L626 126L628 138L622 136L606 136L606 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M652 160L670 160L662 166L645 166L648 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M612 160L618 160L619 168L624 170L631 169L635 172L636 182L633 184L632 183L631 186L627 187L628 188L625 190L624 193L625 196L619 192L614 183L610 183L608 186L599 177L609 176L609 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M583 140L586 140L586 144L592 144L592 159L578 159L578 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M699 128L696 136L694 137L693 129L696 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M688 155L686 158L687 155zM686 155L686 155zM679 150L683 152L682 153L685 156L684 159L686 159L664 160L669 157L672 158L679 151z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M569 112L569 123L559 126L554 126L549 122L547 115L548 114L553 117L554 116L554 118L553 112zM553 115L553 115zM552 113L552 114z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M673 145L673 149L676 149L676 151L678 149L681 150L675 153L674 157L670 158L667 155L667 153L672 149L673 145z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M645 122L653 127L652 130L654 128L652 137L644 138L642 132L638 129L639 122L644 120L644 122z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M592 128L606 128L606 144L586 144L586 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M713 220L711 220L711 218L715 219L714 220z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M654 166L658 166L660 179L653 179L653 181L651 181L650 176L651 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M633 160L646 160L645 161L647 162L642 171L643 172L636 172L634 170L633 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M595 144L612 144L612 159L592 159L592 144z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M694 140L698 140L698 142L693 144L693 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M687 148L689 153L687 153L687 148z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M683 151L683 152z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M659 179L668 181L669 180L671 182L674 192L674 196L672 198L669 195L667 191L668 190L666 189L667 186L663 182L653 182L653 179z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M666 166L665 167L672 176L668 181L660 179L658 166L664 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M459 217L458 215L461 214L462 215L460 217zM457 211L458 212L456 211zM455 210L455 210zM453 209L452 209zM448 207L449 208L448 207z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M644 138L652 138L653 140L652 156L648 159L644 150L642 149L643 143L646 140L645 139z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M657 141L661 141L661 151L657 155L652 156L653 141L655 141z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M642 134L646 140L642 146L630 145L627 137L628 134z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M612 148L631 148L633 151L633 159L612 159L612 148z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M663 152L666 153L669 157L664 160L648 160L648 158L652 157L652 155L658 155L661 151L662 152z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M636 172L643 172L643 176L641 178L647 179L646 183L647 182L648 185L635 183L635 172z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M701 136L700 127L705 118L709 120L709 125L711 129L701 135z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M686 155L686 155zM676 149L686 149L687 153L689 153L688 155L685 154L686 149L684 153L685 154L683 154L683 152L680 149L676 151z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#BD0026" fill-opacity="0.7" fill-rule="evenodd" d="M700 137L702 141L701 142L698 140L694 140L694 137L700 137z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M665 141L655 141L657 138L657 129L659 129L661 125L665 128L663 133L664 134L666 132L668 136L665 141zM659 125L658 126L659 125zM653 128L652 125L645 122L651 118L652 119L650 121L660 121L662 123L663 122L663 124L665 124L657 124L655 126L656 125L654 125L653 128zM649 116L648 117L650 116z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M640 121L638 129L643 134L628 134L625 112L631 112L631 110L633 113L637 113L642 116L647 116L640 121z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M650 166L651 181L648 182L646 180L647 179L641 179L643 175L643 169L645 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M641 145L648 157L647 162L633 160L633 151L630 145L637 145z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M606 112L606 128L586 128L586 130L585 129L581 131L576 125L577 122L573 118L572 112L591 112z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M608 136L622 136L627 138L631 148L612 148L612 144L606 144L606 136z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M569 140L578 140L578 161L576 166L561 151L561 140L564 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M700 127L701 136L696 137L697 131L700 127z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M691 143L692 146L689 151L687 149L690 143z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FED976" fill-opacity="0.7" fill-rule="evenodd" d="M596 159L609 159L609 176L599 176L592 178L592 159z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M693 128L694 137L692 144L696 144L692 145L688 141L675 140L678 137L677 136L685 134L685 132L689 128L691 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M672 160L686 160L687 162L685 162L687 163L680 170L675 166L671 165L662 166L665 163L669 162L670 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M625 112L627 125L606 125L606 112z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M673 140L672 149L667 153L662 152L661 141L669 142L673 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M617 159L633 159L633 170L625 170L618 168L618 160L609 160L612 159z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M675 139L688 140L688 142L690 143L688 144L689 147L686 149L673 149L673 140L675 139z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M699 141L699 142zM699 140L698 143L698 140z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M667 165L675 166L679 170L677 170L677 172L672 176L666 166z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M606 125L627 125L626 126L628 138L622 136L606 136L606 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M652 160L670 160L662 166L645 166L648 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M612 160L618 160L619 168L624 170L631 169L635 172L636 182L633 184L632 183L631 186L627 187L628 188L625 190L624 193L625 196L619 192L614 183L610 183L608 186L599 177L609 176L609 160z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M699 128L696 136L694 137L693 129L696 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M688 155L686 158L687 155zM686 155L686 155zM679 150L683 152L682 153L685 156L684 159L686 159L664 160L669 157L672 158L679 151z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M569 112L569 123L559 126L554 126L549 122L547 115L548 114L553 117L554 116L554 118L553 112zM553 115L553 115zM552 113L552 114z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M673 145L673 149L676 149L676 151L678 149L681 150L675 153L674 157L670 158L667 155L667 153L672 149L673 145z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FC4E2A" fill-opacity="0.7" fill-rule="evenodd" d="M645 122L653 127L652 130L654 128L652 137L644 138L642 132L638 129L639 122L644 120L644 122z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M592 128L606 128L606 144L586 144L586 128z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3" fill="#800026" fill-opacity="0.7" fill-rule="evenodd" d="M713 220L711 220L711 218L715 219L714 220z"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#E31A1C" fill-opacity="0.7" fill-rule="evenodd" d="M551 140L561 140L561 151L576 166L576 173L569 174L568 171L565 169L560 167L559 168L555 160L556 159L554 158L554 154L553 155L550 152L550 148L548 146L549 140z" stroke-dasharray="3"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M552 124L553 126L569 124L571 126L569 131L569 140L549 140L549 124L551 124z" stroke-dasharray="3"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FED976" fill-opacity="0.7" fill-rule="evenodd" d="M572 112L573 119L577 125L576 126L578 126L581 131L585 129L586 130L586 140L569 140L569 129L571 126L569 124L569 112z" stroke-dasharray="3"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FEB24C" fill-opacity="0.7" fill-rule="evenodd" d="M583 140L586 140L586 144L592 144L592 159L578 159L578 140z" stroke-dasharray="3"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FD8D3C" fill-opacity="0.7" fill-rule="evenodd" d="M592 159L592 178L586 178L575 174L577 168L576 162L578 161L578 159L588 159z" stroke-dasharray="3"></path><path class="leaflet-interactive" stroke="white" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#FFEDA0" fill-opacity="0.7" fill-rule="evenodd" d="M528 83L528 84zM527 82L527 83zM524 77L523 77zM522 77L525 79L527 85L524 85L522 83L522 77zM522 81L522 82zM521 74L525 76L523 77L521 75zM521 76L520 75L522 75L520 79L520 77zM519 77L517 75L517 71L519 75zM519 67L521 69L521 72L519 74L518 66zM516 72L516 73zM514 67L516 67L519 71L516 70L516 72L514 67zM484 56L481 59L483 56zM482 54L482 55zM482 -13L489 -11L495 -12L500 -8L501 56L505 55L512 63L514 59L517 58L527 75L532 79L532 83L530 85L530 82L529 83L527 82L527 80L526 81L526 75L522 73L517 62L518 67L515 66L515 64L513 63L515 66L514 67L504 60L505 57L501 59L490 55L485 56L487 54L484 51L480 53L480 58L479 57L474 61L473 60L472 62L470 62L472 59L470 59L472 55L471 53L476 51L473 50L463 63L466 64L457 72L457 74L454 74L454 76L453 75L451 79L448 81L442 81L441 84L439 82L440 83L438 83L434 87L434 84L438 84L437 83L439 83L442 79L445 80L447 76L451 75L455 65L451 64L451 66L448 63L441 65L441 57L440 56L439 58L436 59L432 54L433 52L429 48L435 38L437 39L440 36L441 37L445 35L443 31L445 29L444 27L441 28L439 31L437 29L431 30L428 28L429 25L424 22L427 19L430 19L430 17L432 16L436 15L436 19L442 19L444 17L441 17L442 16L439 13L441 14L442 17L442 12L436 12L434 7L428 2L429 -2L435 -2L442 -13L445 -14L448 -18L449 -17L454 -19L456 -22L460 -20L458 -18L460 -18L461 -21L463 -18L466 -19L468 -18L468 -16L472 -14L478 -15L481 -13zM467 68L468 65L468 68zM464 71L464 69L465 70L468 68L468 71L469 70L464 75L462 73L462 71L464 70zM462 76L462 77zM459 79L459 80zM447 82L447 83zM445 82L446 83L445 82zM440 84L440 84zM440 35L439 36zM439 86L439 87zM431 87L431 88zM431 88L430 88zM429 55L431 57L430 58L426 56L428 55zM429 89L428 90L430 90L425 92L428 89zM422 93L424 91L425 92L423 92L422 94zM419 94L418 94zM418 73L418 73zM417 95L416 95zM413 35L417 35L422 38L419 40L418 38L414 38L413 36zM412 96L411 97zM408 98L410 98L408 98zM406 97L407 96L407 98L405 98zM400 99L399 100L399 98L400 99zM398 98L398 99zM395 99L396 100zM370 94L365 94z" stroke-dasharray="3"></path></g></svg></div><div class="leaflet-pane leaflet-marker-pane"><img src="https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png" class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive leaflet-marker-draggable" alt="" tabindex="0" style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; transform: translate3d(630px, 158px, 0px); z-index: 158;"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(257.375px, 479px, 0px) scale(2);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="http://127.0.0.1:8000/#" title="Zoom in" role="button" aria-label="Zoom in">+</a><a class="leaflet-control-zoom-out" href="http://127.0.0.1:8000/#" title="Zoom out" role="button" aria-label="Zoom out">−</a></div></div><div class="leaflet-top leaflet-right"><div class="info leaflet-control"><h4>US Population Density</h4>Hover over a state</div></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="info legend leaflet-control"><i style="background:#FFEDA0"></i> 0–10<br><i style="background:#FED976"></i> 10–20<br><i style="background:#FEB24C"></i> 20–50<br><i style="background:#FD8D3C"></i> 50–100<br><i style="background:#FC4E2A"></i> 100–200<br><i style="background:#E31A1C"></i> 200–500<br><i style="background:#BD0026"></i> 500–1000<br><i style="background:#800026"></i> 1000+</div><div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a> | Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a></div></div></div></div>
+    </div>
+    
+    
+    
+    
+    
+        
+            <div class="d-flex justify-content-center my-5">
+                <form action="http://127.0.0.1:8000/" method="POST">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="OnKhdSFiGLFFmYPuqY2cicalj9REN7bn8K2wIAxg2coDDsmFSVv6vN6penSqyzsQ">
+                    <input type="hidden" name="valLatLng" value="" id="valLatLng">
+                    <button type="submit" class="btn btn-outline-success ">Check My Fips Code</button>
+        
+        
+                </form>
+            </div>
+        
+            <div class="ltlncc">
+        
+                <input type="hidden" name="latcc1" id="latcc1" value="">
+                <input type="hidden" name="lngcc1" id="lngcc1" value="">
+        
+            </div>
+
+
+
+
+</section>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+<script type="text/javascript" src="./COVID-19 WEBSITE_files/us-states.js.download"></script>
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var latcheck = document.getElementById("latcc1").value
+    var lngcheck = document.getElementById("lngcc1").value
+    // if (lngcheck === "" | latcheck === "") {
+
+        var map = L.map('map').setView([37.0902, -95.7129], 4);
+
+        var tilelayer1 = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+
+
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/light-v9',
+        
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(map);      
+
+
+    var singlemarker = L.marker([37.0902, -95.7129], {
+            draggable: true
+        }).addTo(map)
+        
+        L.geoJson(statesData).addTo(map);
+
+
+    function getColor(d) {
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0';
+}
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.density),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+L.geoJson(statesData, {style: style}).addTo(map);
+
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+    info.update(layer.feature.properties);
+}
+
+
+
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+    info.update();
+}
+
+var geojson;
+geojson = L.geoJson(statesData);
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
+
+geojson = L.geoJson(statesData, {
+    style: style,
+    onEachFeature: onEachFeature
+}).addTo(map);
+
+
+
+
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+        : 'Hover over a state');
+};
+
+info.addTo(map);
+
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
+
+
+
+    // }
+
+
+
+
+
+
+    // else {
+    //     var map = L.map('map').setView([parseFloat(latcheck), parseFloat(lngcheck)], 4);
+
+    //     var tilelayer1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //         attribution: 'Ayyan Inam From Fiverr'
+    //     }).addTo(map);
+
+    //     var singlemarker = L.marker([parseFloat(latcheck), parseFloat(lngcheck)], {
+    //         draggable: true
+    //     }).addTo(map)
+
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // singlemarker.on('drag', function () {
+    //     // document.getElementById("latlng").innerHTML = singlemarker.getLatLng()
+    //     document.getElementById("valLatLng").value = singlemarker.getLatLng()
+    //     document.getElementById("latitude_lng_value").value = singlemarker.getLatLng()
+
+
+
+    // })
+    // // document.getElementById("latlng").innerHTML += singlemarker.getLatLng()
+    // document.getElementById("latitude_lng_value").value += singlemarker.getLatLng()
+    // document.getElementById("valLatLng").value = singlemarker.getLatLng()
+
+    // function messageclickfun(e) {
+    //     document.getElementById("zip_code").value = e.slice(19,)
+    // }
+
+
+
+
+
+
+
+
+    
+
+</script>
+
+
+
+
+
+
+
+<script src="./COVID-19 WEBSITE_files/bootstrap.min.js.download"></script>
+<script>
+
+    let today = new Date();
+    let yesterday = new Date();
+
+    yesterday.setDate(today.getDate() - 1);
+    document.getElementById("date").value = yesterday.toISOString().slice(0, 10);
+</script>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration><div id="ci-extension-div"></div></html>

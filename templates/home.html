@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+{% load static %}
+
+<style>
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+
+    .info h4 {
+        margin: 0 0 5px;
+        color: #777;
+    }
+
+    .legend {
+        line-height: 18px;
+        color: #555;
+    }
+
+    .legend i {
+        width: 18px;
+        height: 18px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+    }
+</style>
+<section class="body my-5">
+    <div class="d-flex justify-content-center">
+        <h6 class="border border-dark d-inline-block p-3 rounded ">
+            Select your location from the map below and enter a date to display current data or enter a Fips code and
+            date to show the data as well
+        </h6>
+    </div>
+    {% if messages %}
+    <div class="container d-flex justify-content-center my-5">
+        {% for message in messages %}
+        <button type="button" id="message" onclick="messageclickfun(this.innerText)" class="btn btn-primary">{{ message }}</button>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="my-5 rounded border border-dark" id="map"></div>
+    </div>
+
+
+
+
+
+    <div class="d-flex justify-content-center my-5">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="valLatLng" value="" id="valLatLng">
+            <button type="submit" class="btn btn-outline-success ">Check My Fips Code</button>
+
+
+        </form>
+    </div>
+
+    <div class="ltlncc">
+
+        <input type="hidden" name="latcc1" id="latcc1" value="{{ latcc }}">
+        <input type="hidden" name="lngcc1" id="lngcc1" value="{{ lngcc }}">
+
+    </div>
+
+    
+</section>
+
+
+
+
+<script>
+
+
+
+var latcheck = document.getElementById("latcc1").value
+    var lngcheck = document.getElementById("lngcc1").value
+    if (lngcheck === "" | latcheck === "") {
+
+        var map1 = L.map('map').setView([37.0902, -95.7129], 4);
+
+
+            var tilelayer1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Ayyan Inam From Fiverr'
+    }).addTo(map1);
+
+
+        var singlemarker = L.marker([37.0902, -95.7129], {
+            draggable: true
+        }).addTo(map1)
+
+
+
+
+
+    }
+
+
+
+    else {
+
+
+        var map1 = L.map('map').setView([parseFloat(latcheck), parseFloat(lngcheck)], 4);
+
+  
+        var tilelayer1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Ayyan Inam From Fiverr'
+    }).addTo(map1);
+
+
+
+        var singlemarker = L.marker([parseFloat(latcheck), parseFloat(lngcheck)], {
+            draggable: true
+        }).addTo(map1)
+
+
+    }
+
+
+
+    
+
+    singlemarker.on('drag', function () {
+        // document.getElementById("latlng").innerHTML = singlemarker.getLatLng()
+        document.getElementById("valLatLng").value = singlemarker.getLatLng()
+        document.getElementById("latitude_lng_value").value = singlemarker.getLatLng()
+
+    })
+    // document.getElementById("latlng").innerHTML += singlemarker.getLatLng()
+    document.getElementById("latitude_lng_value").value += singlemarker.getLatLng()
+    document.getElementById("valLatLng").value = singlemarker.getLatLng()
+
+    function messageclickfun(e) {
+        document.getElementById("zip_code").value = e.slice(19,)
+    }
+
+
+
+
+</script>
+
+
+{% endblock body %}
